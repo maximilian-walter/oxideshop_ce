@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 
 use Exception;
 use oxDb;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\CompatibilityChecker\Bridge\DatabaseCheckerBridgeInterface;
 use OxidEsales\EshopCommunity\Setup\Database;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
@@ -18,6 +19,8 @@ use OxidEsales\EshopCommunity\Setup\Session;
 use OxidEsales\EshopCommunity\Setup\Utilities;
 use PDO;
 use PHPUnit\Framework\MockObject\MockObject as Mock;
+use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Container\ContainerInterface;
 use StdClass;
 
 final class DatabaseTest extends \OxidTestCase
@@ -34,10 +37,7 @@ final class DatabaseTest extends \OxidTestCase
         parent::tearDown();
     }
 
-    /**
-     * Testing SetupDb::execSql()
-     */
-    public function testExecSqlBadConnection()
+    public function testExecSqlBadConnection(): void
     {
         /** @var Database|Mock $databaseMock */
         $databaseMock = $this->createPartialMock(Database::class, ['getConnection']);
@@ -300,7 +300,7 @@ final class DatabaseTest extends \OxidTestCase
 
         // saveShopSettings
         $utils = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Utilities', array("generateUid"));
-        $utils->expects($this->any())->method("generateUid")->will($this->returnValue("testid"));
+        $utils->method("generateUid")->will($this->returnValue("testid"));
 
         $session = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Session', array("setSessionParam", "getSessionParam"), array(), '', null);
 
@@ -313,11 +313,11 @@ final class DatabaseTest extends \OxidTestCase
         } else {
             $map[] = array('send_technical_information_to_oxid', false);
         }
-        $session->expects($this->any())->method("getSessionParam")->will($this->returnValueMap($map));
+        $session->method("getSessionParam")->will($this->returnValueMap($map));
 
 
         $setup = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Setup', array("getShopId"));
-        $setup->expects($this->any())->method("getShopId");
+        $setup->method("getShopId");
 
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("execSql", "getInstance", "getConnection"));
         $map = array(
@@ -325,8 +325,8 @@ final class DatabaseTest extends \OxidTestCase
             array('Session', $session),
             array('Setup', $setup)
         );
-        $database->expects($this->any())->method("getInstance")->will($this->returnValueMap($map));
-        $database->expects($this->any())->method("getConnection")->will($this->returnValue($this->createConnection()));
+        $database->method("getInstance")->will($this->returnValueMap($map));
+        $database->method("getConnection")->will($this->returnValue($this->createConnection()));
 
         $this->expectException(LanguageParamsException::class);
         $database->saveShopSettings(array());
