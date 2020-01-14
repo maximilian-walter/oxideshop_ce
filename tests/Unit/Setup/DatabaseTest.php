@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 
 use Exception;
 use oxDb;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\CompatibilityChecker\Bridge\DatabaseCheckerBridgeInterface;
 use OxidEsales\EshopCommunity\Setup\Database;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
@@ -19,8 +18,6 @@ use OxidEsales\EshopCommunity\Setup\Session;
 use OxidEsales\EshopCommunity\Setup\Utilities;
 use PDO;
 use PHPUnit\Framework\MockObject\MockObject as Mock;
-use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Container\ContainerInterface;
 use StdClass;
 
 final class DatabaseTest extends \OxidTestCase
