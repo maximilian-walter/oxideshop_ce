@@ -34,7 +34,10 @@ final class DatabaseTest extends \OxidTestCase
         parent::tearDown();
     }
 
-    public function testExecSqlBadConnection(): void
+    /**
+     * Testing SetupDb::execSql()
+     */
+    public function testExecSqlBadConnection()
     {
         /** @var Database|Mock $databaseMock */
         $databaseMock = $this->createPartialMock(Database::class, ['getConnection']);
@@ -297,7 +300,7 @@ final class DatabaseTest extends \OxidTestCase
 
         // saveShopSettings
         $utils = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Utilities', array("generateUid"));
-        $utils->method("generateUid")->will($this->returnValue("testid"));
+        $utils->expects($this->any())->method("generateUid")->will($this->returnValue("testid"));
 
         $session = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Session', array("setSessionParam", "getSessionParam"), array(), '', null);
 
@@ -310,11 +313,11 @@ final class DatabaseTest extends \OxidTestCase
         } else {
             $map[] = array('send_technical_information_to_oxid', false);
         }
-        $session->method("getSessionParam")->will($this->returnValueMap($map));
+        $session->expects($this->any())->method("getSessionParam")->will($this->returnValueMap($map));
 
 
         $setup = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Setup', array("getShopId"));
-        $setup->method("getShopId");
+        $setup->expects($this->any())->method("getShopId");
 
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("execSql", "getInstance", "getConnection"));
         $map = array(
@@ -322,8 +325,8 @@ final class DatabaseTest extends \OxidTestCase
             array('Session', $session),
             array('Setup', $setup)
         );
-        $database->method("getInstance")->will($this->returnValueMap($map));
-        $database->method("getConnection")->will($this->returnValue($this->createConnection()));
+        $database->expects($this->any())->method("getInstance")->will($this->returnValueMap($map));
+        $database->expects($this->any())->method("getConnection")->will($this->returnValue($this->createConnection()));
 
         $this->expectException(LanguageParamsException::class);
         $database->saveShopSettings(array());
