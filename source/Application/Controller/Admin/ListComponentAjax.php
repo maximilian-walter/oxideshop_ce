@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * AJAX call processor class
@@ -489,6 +490,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function _outputResponse($aData)
     {
+        \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: application/json; charset=UTF-8");
         $this->_output(json_encode($aData));
     }
 
