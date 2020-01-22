@@ -72,8 +72,7 @@ if ($blAjaxCall) {
         ob_start();
         $oAjaxComponent->setName($sContainer);
         $oAjaxComponent->processRequest(Registry::get(Request::class)->getRequestParameter('fnc'));
-        $content = ob_get_contents();
-        ob_end_clean();
+        $content = ob_get_clean();
         echo $content;
 
     }
