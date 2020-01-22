@@ -1960,4 +1960,21 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
             $path
         );
     }
+
+    /**
+     * Captures screen shot to given file.
+     *
+     * @param string $sFileName
+     *
+     * @return string
+     */
+    public function getScreenShot($sFileName)
+    {
+        $oDriver = $this->getMinkSession()->getDriver();
+        if ($oDriver instanceof \Behat\Mink\Driver\SeleniumDriver) {
+            return $this->getMinkSession()->getDriver()->getBrowser()->captureEntirePageScreenshot($sFileName, "");
+        }
+
+        return '';
+    }
 }
