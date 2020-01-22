@@ -490,7 +490,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function _outputResponse($aData)
     {
-        \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: application/json; charset=UTF-8");
+       // \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: application/json; charset=UTF-8");
         $this->_output(json_encode($aData));
     }
 
