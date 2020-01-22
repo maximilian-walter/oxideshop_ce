@@ -501,6 +501,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function _output($sOut)
     {
+        \OxidEsales\Eshop\Core\Registry::getLogger()->error($sOut);
         echo $sOut;
     }
 
