@@ -1267,9 +1267,9 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         //\OxidEsales\Eshop\Core\Registry::getLogger()->error($this->getHtmlSource());
 
 
-        $this->click("orderup");
+        #$this->click("orderup");
 
-        sleep(30);
+        #sleep(30);
 /*
         $this->assertElementText("0", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[3]");
         $this->assertElementText("6", "//div[@id='container2_c']/table/tbody[2]/tr[7]/td[3]");
