@@ -29,6 +29,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestDa
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\TestEvent;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 #use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
+use OxidEsales\EshopCommunity\Tests\Utils\ModuleSettingsRestorer;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
@@ -54,26 +55,31 @@ class ModuleActivationServiceTest extends TestCase
 
     use ContainerTrait;
 
+    private static $moduleSettingsRestorer;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        self::$moduleSettingsRestorer = new ModuleSettingsRestorer();
+        self::$moduleSettingsRestorer->backupModuleSettings();
+    }
+
     public function setUp()
     {
         $this->container = $this->setupAndConfigureContainer();
-
-        #$this->databaseRestorer = new DatabaseRestorer();
-        #$this->databaseRestorer->dumpDB(__CLASS__);
 
         parent::setUp();
     }
 
     protected function tearDown()
     {
-        #$this->databaseRestorer->restoreDB(__CLASS__);
+        self::$moduleSettingsRestorer->restoreModuleSettings();
 
         parent::tearDown();
     }
 
     public function testActivation()
     {
-        $this->markTestSkipped("TODO: replace DataBaseRestorer from the TestingLibrary by something sane here.");
         $this->persistModuleConfiguration($this->getTestModuleConfiguration());
 
         $moduleStateService = $this->container->get(ModuleStateServiceInterface::class);
@@ -90,7 +96,6 @@ class ModuleActivationServiceTest extends TestCase
 
     public function testSetConfiguredInModuleConfiguration()
     {
-        $this->markTestSkipped("TODO: replace DataBaseRestorer from the TestingLibrary by something sane here.");
         $this->persistModuleConfiguration($this->getTestModuleConfiguration());
 
         $moduleConfigurationDao = $this->container->get(ModuleConfigurationDaoInterface::class);
@@ -109,7 +114,6 @@ class ModuleActivationServiceTest extends TestCase
 
     public function testClassExtensionChainUpdate()
     {
-        $this->markTestSkipped("TODO: replace DataBaseRestorer from the TestingLibrary by something sane here.");
         $shopConfigurationSettingDao = $this->container->get(ShopConfigurationSettingDaoInterface::class);
 
         $moduleConfiguration = $this->getTestModuleConfiguration();
@@ -145,7 +149,6 @@ class ModuleActivationServiceTest extends TestCase
 
     public function testActivationOfModuleServices()
     {
-        $this->markTestSkipped("TODO: replace DataBaseRestorer from the TestingLibrary by something sane here.");
         $moduleConfiguration = $this->getTestModuleConfiguration();
         $this->persistModuleConfiguration($moduleConfiguration);
 
@@ -170,7 +173,6 @@ class ModuleActivationServiceTest extends TestCase
      */
     public function testDeActivationOfModuleServices()
     {
-        $this->markTestSkipped("TODO: replace DataBaseRestorer from the TestingLibrary by something sane here.");
         $moduleConfiguration = $this->getTestModuleConfiguration();
         $this->persistModuleConfiguration($moduleConfiguration);
 

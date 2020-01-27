@@ -141,6 +141,9 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     public function deleteAll(): void
     {
+        foreach($this->getShopIds() as $shopId) {
+                $this->cache->evict($shopId);
+        }
         if ($this->fileSystem->exists($this->getShopsConfigurationDirectory())) {
             $this->fileSystem->remove(
                 $this->getShopsConfigurationDirectory()

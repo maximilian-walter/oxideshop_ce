@@ -293,6 +293,13 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function fRound($sVal, $oCur = null)
     {
+        if (is_null($oCur)) {
+            $oCur = $this->getConfig()->getActShopCurrencyObject();
+        }
+        return round($sVal, $oCur->decimal);
+
+        # TODO: Check if the following is really not needed any more
+
         startProfile('fround');
 
         //cached currency precision, this saves about 1% of execution time

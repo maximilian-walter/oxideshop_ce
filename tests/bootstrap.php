@@ -19,11 +19,3 @@ function doTerribleConfigurationStuff()
     Registry::set(ConfigFile::class, $configFile);
 
 }
-
-#// For our test we use a real simple oxNew
-#function oxNew($className)
-#{
-#    $arguments = func_get_args();
-#    $class = array_shift($arguments);
-#    return new $class($arguments);
-#}
