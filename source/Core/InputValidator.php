@@ -431,6 +431,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
         $validationResult = true;
 
         switch ($paymentId) {
+            //  @deprecated since v6.6.0 (2020-01-27); credit card payment method will be no longer supported
             case 'oxidcreditcard':
                 $validationResult = false;
 
@@ -446,6 +447,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
                     );
                 }
                 break;
+            // END deprecated
 
             case "oxiddebitnote":
                 $validationResult = false;

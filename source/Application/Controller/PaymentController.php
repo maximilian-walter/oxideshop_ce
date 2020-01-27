@@ -309,11 +309,13 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             return;
         }
 
+        //  @deprecated since v6.6.0 (2020-01-27); credit card payment method will be no longer supported
         if ($this->getDynDataFiltered() && $sPaymentId == 'oxidcreditcard') {
             $oSession->setVariable('payerror', 7);
 
             return;
         }
+        // END deprecated
 
         $oBasket = $oSession->getBasket();
         $oBasket->setPayment(null);
