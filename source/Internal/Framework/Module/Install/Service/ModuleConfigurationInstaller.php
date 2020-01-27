@@ -82,7 +82,7 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
      *
      * @throws InvalidMetaDataException
      */
-    public function install(string $moduleSourcePath, string $moduleTargetPath)
+    public function install(string $moduleSourcePath, string $moduleTargetPath): void
     {
         $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($moduleSourcePath));
         $moduleConfiguration = $this->metadataMapper->fromData($metadata);
@@ -93,6 +93,11 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         $projectConfiguration = $this->addModuleConfigurationToAllShops($moduleConfiguration, $projectConfiguration);
 
         $this->projectConfigurationDao->save($projectConfiguration);
+    }
+
+    public function uninstall(string $moduleSourcePath): void
+    {
+        // TODO: Implement uninstall() method.
     }
 
     /**
