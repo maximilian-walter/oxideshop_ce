@@ -60,9 +60,12 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
         );
     }
 
+    /**
+     * @param OxidEshopPackage $package
+     */
     public function uninstall(OxidEshopPackage $package): void
     {
-        // TODO: Implement uninstall() method.
+        $this->fileSystemService->remove($this->getTargetPath($package));
     }
 
     /**
