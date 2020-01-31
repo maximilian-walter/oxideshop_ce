@@ -9,39 +9,23 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Webmozart\PathUtil\Path;
 
 class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterface
 {
     /**
-     * @var string
-     */
-    private $metadataFileName = 'metadata.php';
-
-    /**
      * @var ProjectConfigurationDaoInterface
      */
     private $projectConfigurationDao;
-
-    /**
-     * @var MetaDataProviderInterface
-     */
-    private $metadataProvider;
-
-    /**
-     * @var MetaDataToModuleConfigurationDataMapperInterface
-     */
-    private $metadataMapper;
 
     /**
      * @var ContextInterface
@@ -54,25 +38,28 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     private $moduleConfigurationMergingService;
 
     /**
+     * @var ModuleConfigurationDaoInterface
+     */
+    private $moduleConfigurationDao;
+
+    /**
      * ModuleConfigurationInstaller constructor.
-     * @param ProjectConfigurationDaoInterface                 $projectConfigurationDao
-     * @param MetaDataProviderInterface                        $metadataProvider
-     * @param MetaDataToModuleConfigurationDataMapperInterface $metadataMapper
-     * @param ModuleConfigurationMergingServiceInterface       $moduleConfigurationMergingService
-     * @param BasicContextInterface                            $context
+     *
+     * @param ProjectConfigurationDaoInterface           $projectConfigurationDao
+     * @param ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService
+     * @param BasicContextInterface                      $context
+     * @param ModuleConfigurationDaoInterface            $moduleConfigurationDao
      */
     public function __construct(
         ProjectConfigurationDaoInterface $projectConfigurationDao,
-        MetaDataProviderInterface $metadataProvider,
-        MetaDataToModuleConfigurationDataMapperInterface $metadataMapper,
         ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService,
-        BasicContextInterface $context
+        BasicContextInterface $context,
+        ModuleConfigurationDaoInterface $moduleConfigurationDao
     ) {
         $this->projectConfigurationDao = $projectConfigurationDao;
-        $this->metadataProvider = $metadataProvider;
-        $this->metadataMapper = $metadataMapper;
         $this->context = $context;
         $this->moduleConfigurationMergingService = $moduleConfigurationMergingService;
+        $this->moduleConfigurationDao = $moduleConfigurationDao;
     }
 
 
@@ -84,9 +71,7 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
      */
     public function install(string $moduleSourcePath, string $moduleTargetPath): void
     {
-        $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($moduleSourcePath));
-        $moduleConfiguration = $this->metadataMapper->fromData($metadata);
-
+        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleSourcePath);
         $moduleConfiguration->setPath($this->getModuleRelativePath($moduleTargetPath));
 
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
@@ -108,8 +93,7 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
      */
     public function isInstalled(string $moduleFullPath): bool
     {
-        $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($moduleFullPath));
-        $moduleConfiguration = $this->metadataMapper->fromData($metadata);
+        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleFullPath);
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
 
         foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
@@ -138,15 +122,6 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         }
 
         return $projectConfiguration;
-    }
-
-    /**
-     * @param string $moduleFullPath
-     * @return string
-     */
-    private function getMetadataFilePath(string $moduleFullPath): string
-    {
-        return $moduleFullPath . DIRECTORY_SEPARATOR . $this->metadataFileName;
     }
 
     /**
