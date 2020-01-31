@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Webmozart\PathUtil\Path;
 
 class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterface
@@ -27,7 +27,7 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     private $projectConfigurationDao;
 
     /**
-     * @var ContextInterface
+     * @var BasicContextInterface
      */
     private $context;
 
@@ -43,13 +43,13 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
 
     /**
      * @param ProjectConfigurationDaoInterface $projectConfigurationDao
-     * @param ContextInterface $context
+     * @param BasicContextInterface $context
      * @param ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService
      * @param ModuleConfigurationDaoInterface $metadataModuleConfigurationDao
      */
     public function __construct(
         ProjectConfigurationDaoInterface $projectConfigurationDao,
-        ContextInterface $context,
+        BasicContextInterface $context,
         ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService,
         ModuleConfigurationDaoInterface $metadataModuleConfigurationDao
     ) {

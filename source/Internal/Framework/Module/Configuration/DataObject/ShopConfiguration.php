@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject;
 
@@ -70,7 +70,7 @@ class ShopConfiguration
      */
     public function deleteModuleConfiguration(string $moduleId)
     {
-        if (array_key_exists($moduleId, $this->moduleConfigurations)) {
+        if (\array_key_exists($moduleId, $this->moduleConfigurations)) {
             $this->removeModuleExtensionFromClassChain($moduleId);
             unset($this->moduleConfigurations[$moduleId]);
         } else {
