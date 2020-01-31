@@ -74,7 +74,7 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
      */
     public function isInstalled(OxidEshopPackage $package): bool
     {
-        return file_exists($this->getTargetPath($package));
+        return $this->fileSystemService->exists($this->getTargetPath($package));
     }
 
     /**
