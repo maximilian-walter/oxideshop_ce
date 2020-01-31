@@ -10,12 +10,15 @@ services:
 
   oxid_esales.common.storage.flock_store:
     class: Symfony\Component\Lock\Store\FlockStore
+    public: true
 
   oxid_esales.common.file_locator:
     class: Symfony\Component\Config\FileLocator
+    public: true
 
   oxid_esales.symfony.file_system:
     class: Symfony\Component\Filesystem\Filesystem
+    public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactory

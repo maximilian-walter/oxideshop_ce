@@ -36,5 +36,6 @@ services:
 
   utility.context.admin_log_file_path:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
+    public: true
     factory: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:getAdminLogFilePath
 
